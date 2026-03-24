@@ -1,0 +1,16 @@
+# Python virtual environment
+.venv/
+venv/
+
+.python-version
+uv.lock
+*.py
+
+# Zensical build output
+site/
+
+# Cache
+.cache/
+
+# System files
+.DS_Store

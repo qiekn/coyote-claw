@@ -1,0 +1,69 @@
+[project]
+
+site_name = "Coyote Claw"
+site_description = "DG-LAB coyote 3.0 controller"
+site_author = "qiekn"
+site_url = ""
+repo_url = ""
+
+# Navigation: auto-derived from docs/ directory structure if not defined.
+# Read more: https://zensical.org/docs/setup/navigation/
+# nav = [
+#   { "Home" = "index.md" },
+# ]
+
+# Additional CSS/JS
+# extra_css = ["stylesheets/extra.css"]
+# extra_javascript = ["javascripts/extra.js"]
+
+[project.theme]
+
+logo = "images/zensical.svg"
+# custom_dir = "overrides"
+favicon = "images/zensical.png"
+language = "en"
+
+features = [
+    "announce.dismiss",
+    "content.code.annotate",
+    "content.code.copy",
+    "content.code.select",
+    "content.footnote.tooltips",
+    "content.tabs.link",
+    "content.tooltips",
+    "navigation.footer",
+    "navigation.indexes",
+    "navigation.instant",
+    "navigation.instant.prefetch",
+    "navigation.path",
+    "navigation.sections",
+    "navigation.top",
+    "navigation.tracking",
+    "search.highlight",
+    "toc.integrate",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+# [project.theme.font]
+# text = "Inter"
+# code = "Jetbrains Mono"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = ""
+
+[project.markdown_extensions.pymdownx.highlight]
+pygments_lang_class = true
+[project.markdown_extensions.pymdownx.superfences]
+[project.markdown_extensions.admonition]
