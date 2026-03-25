@@ -6,6 +6,10 @@
 
 ![波形格式](images/waveform-format.svg)
 
+![HEX 解码 (手绘)](images/waveform-hex-decode.png)
+
+![单元拆解 (手绘)](images/waveform-unit-breakdown.png)
+
 ```
 [FF][FF][FF][FF][II][II][II][II]
  频率  频率  频率  频率  强度  强度  强度  强度
@@ -71,6 +75,8 @@ DG-LAB APP 默认呼吸波形 (12 个单元 = 1.2 秒一个周期):
 ## 频率转换
 
 蓝牙 V3 协议中频率范围是 10-1000，需要压缩到 10-240:
+
+![频率转换曲线 (手绘)](images/frequency-conversion.png)
 
 | 输入范围 | 转换公式 | 输出范围 |
 | :- | :- | :- |

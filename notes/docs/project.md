@@ -13,6 +13,8 @@
 
 ![协议流程](images/protocol-flow.svg)
 
+![连接时序图 (手绘)](images/protocol-flow-handdrawn.png)
+
 ### 步骤详解
 
 **1. 启动服务器**
