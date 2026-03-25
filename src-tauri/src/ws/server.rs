@@ -4,14 +4,13 @@ use futures_util::{SinkExt, StreamExt};
 use log::{error, info};
 use tokio::net::{TcpListener, TcpStream};
 use tokio::sync::mpsc;
+use tokio_tungstenite::tungstenite::handshake::server::{Request, Response};
 use tokio_tungstenite::tungstenite::Message;
 use uuid::Uuid;
 
 use crate::ws::connection::{ConnectionManager, Role};
 use crate::ws::message::{handle_message, ServerEvent};
-use crate::ws::protocol::{
-    ConnectionStatus, ErrorCode, MessageType, WsMessage,
-};
+use crate::ws::protocol::{ConnectionStatus, ErrorCode, MessageType, WsMessage};
 
 /// WS Server 状态
 #[derive(Debug, Clone)]
@@ -72,7 +71,14 @@ pub async fn start_server(server: WsServer) -> Result<(), Box<dyn std::error::Er
 
 /// 处理单个 WebSocket 连接
 async fn handle_connection(server: WsServer, stream: TcpStream, addr: SocketAddr) {
-    let ws_stream = match tokio_tungstenite::accept_async(stream).await {
+    // 从 HTTP upgrade request 中提取 URL path (包含 clientId)
+    let mut request_path = String::new();
+    let callback = |req: &Request, resp: Response| -> Result<Response, _> {
+        request_path = req.uri().path().to_string();
+        Ok(resp)
+    };
+
+    let ws_stream = match tokio_tungstenite::accept_hdr_async(stream, callback).await {
         Ok(ws) => ws,
         Err(e) => {
             error!("WebSocket handshake failed from {}: {}", addr, e);
@@ -80,8 +86,16 @@ async fn handle_connection(server: WsServer, stream: TcpStream, addr: SocketAddr
         }
     };
 
-    // 从 URL path 提取 clientId (APP 连接时使用)
-    // 这里简化处理：所有新连接都作为 target 注册
+    // 从 path 提取 clientId: "/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    let path_client_id = request_path.trim_start_matches('/').to_string();
+    if !path_client_id.is_empty() {
+        info!(
+            "APP connecting from {} with clientId in path: {}",
+            addr, path_client_id
+        );
+    }
+
+    // 分配 targetId
     let target_id = Uuid::new_v4().to_string();
     info!("New target connection from {}: {}", addr, target_id);
 
@@ -94,7 +108,7 @@ async fn handle_connection(server: WsServer, stream: TcpStream, addr: SocketAddr
     // 发送 bind 初始消息 (告知 targetId)
     let bind_msg = serde_json::to_string(&WsMessage {
         msg_type: MessageType::Str("bind".into()),
-        client_id: String::new(),
+        client_id: path_client_id.clone(),
         target_id: target_id.clone(),
         message: "targetId".into(),
     })
@@ -103,7 +117,11 @@ async fn handle_connection(server: WsServer, stream: TcpStream, addr: SocketAddr
     let (mut ws_sender, mut ws_receiver) = ws_stream.split();
 
     // 发送初始 bind 消息
-    if ws_sender.send(Message::Text(bind_msg.into())).await.is_err() {
+    if ws_sender
+        .send(Message::Text(bind_msg.into()))
+        .await
+        .is_err()
+    {
         let _ = server.connections.remove(&target_id).await;
         return;
     }

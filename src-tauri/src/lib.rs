@@ -81,8 +81,17 @@ pub fn run() {
 
 #[tauri::command]
 fn get_qrcode_url(state: tauri::State<AppState>) -> String {
-    // 本地模式使用 localhost
-    state.server.qrcode_url("127.0.0.1")
+    // 获取本机局域网 IP
+    let host = local_ip().unwrap_or_else(|| "127.0.0.1".to_string());
+    state.server.qrcode_url(&host)
+}
+
+/// 获取本机局域网 IP
+fn local_ip() -> Option<String> {
+    let socket = std::net::UdpSocket::bind("0.0.0.0:0").ok()?;
+    socket.connect("8.8.8.8:80").ok()?;
+    let addr = socket.local_addr().ok()?;
+    Some(addr.ip().to_string())
 }
 
 #[tauri::command]
