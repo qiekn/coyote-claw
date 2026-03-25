@@ -127,42 +127,42 @@ export function WaveformEditor({ onBack }: { onBack: () => void }) {
           </div>
 
           {/* Pulse visualization */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2.5">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-[var(--foreground)]">
-                ✨ 脉冲元形状 <span className="font-normal text-[var(--muted-foreground)]">0.8 s (8组脉冲)</span>
-              </span>
               <div className="flex items-center gap-2">
-                <button className="rounded-md border border-[var(--border)] p-1 text-[var(--muted-foreground)] hover:bg-[var(--secondary)]">
-                  −
+                <svg className="h-4 w-4 fill-none stroke-[var(--foreground)]" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+                </svg>
+                <span className="text-sm font-semibold text-[var(--foreground)]">脉冲元形状</span>
+                <span className="text-xs text-[var(--muted-foreground)]">0.8s (8根竖条)</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <button className="flex items-center justify-center rounded-md border border-[var(--border)] bg-[var(--background)] p-2 shadow-sm hover:bg-[var(--secondary)]">
+                  <svg className="h-4 w-4 fill-none stroke-[var(--foreground)]" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round"><line x1="5" y1="12" x2="19" y2="12" /></svg>
                 </button>
-                <button className="rounded-md border border-[var(--border)] p-1 text-[var(--muted-foreground)] hover:bg-[var(--secondary)]">
-                  +
+                <button className="flex items-center justify-center rounded-md border border-[var(--border)] bg-[var(--background)] p-2 shadow-sm hover:bg-[var(--secondary)]">
+                  <svg className="h-4 w-4 fill-none stroke-[var(--foreground)]" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                 </button>
               </div>
             </div>
 
-            {/* Pulse bar editor */}
-            <div className="flex items-end gap-3 rounded-lg bg-[var(--secondary)] p-6" style={{ height: 180 }}>
-              {[10, 20, 35, 50, 65, 75, 85, 95].map((h, i) => (
-                <div
-                  key={i}
-                  className="relative flex flex-1 cursor-ns-resize flex-col items-center"
-                  style={{ height: `${h}%` }}
-                >
-                  {/* Drag handle */}
-                  <div className="absolute -top-1.5 h-3 w-3 rounded-sm border-2 border-[var(--foreground)] bg-transparent" />
-                  {/* Bar body */}
-                  <div className="mt-2 h-full w-full rounded-sm bg-[var(--primary)] opacity-60 transition-all hover:opacity-90" />
-                </div>
-              ))}
-            </div>
+            {/* Pulse chart - thin bars with knob handles */}
+            <PulseChart />
 
             {/* Legend */}
-            <div className="flex gap-4 text-[11px] text-[var(--muted-foreground)]">
-              <span>■ 始小 (拖动边缘调节大小)</span>
-              <span>◇ 改变消息</span>
-              <span>● 选中</span>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1">
+                <div className="h-2.5 w-2.5 rounded-sm bg-[var(--primary)]" />
+                <span className="text-[11px] text-[var(--muted-foreground)]">锚点 (拖动或双击输入)</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="h-2.5 w-2.5 rounded-sm border border-[var(--muted-foreground)] bg-[var(--secondary)]" />
+                <span className="text-[11px] text-[var(--muted-foreground)]">线性插值</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="h-2.5 w-2.5 rounded-sm border-2 border-[var(--primary)] bg-[var(--secondary)]" />
+                <span className="text-[11px] text-[var(--muted-foreground)]">选中</span>
+              </div>
             </div>
           </div>
         </div>
@@ -196,6 +196,66 @@ function SettingBox({ label, value, highlight }: { label: string; value: string;
     >
       <span className="text-[11px] text-[var(--muted-foreground)]">{label}</span>
       <span className="text-lg font-semibold text-[var(--foreground)]">{value}</span>
+    </div>
+  );
+}
+
+// Bar data: type, height in px
+const PULSE_BARS: { type: "anchor" | "interp" | "selected"; h: number }[] = [
+  { type: "anchor", h: 2 },
+  { type: "interp", h: 23 },
+  { type: "interp", h: 46 },
+  { type: "interp", h: 69 },
+  { type: "interp", h: 92 },
+  { type: "selected", h: 115 },
+  { type: "interp", h: 138 },
+  { type: "anchor", h: 160 },
+];
+
+function AnchorKnob() {
+  return (
+    <div className="flex h-4 w-4 flex-col items-center justify-center gap-0.5 rounded-[3px] bg-[var(--primary)]">
+      <div className="h-px w-2 bg-[var(--primary-foreground)]" />
+      <div className="h-px w-2 bg-[var(--primary-foreground)]" />
+      <div className="h-px w-2 bg-[var(--primary-foreground)]" />
+    </div>
+  );
+}
+
+function InterpKnob() {
+  return (
+    <div className="h-[13px] w-[13px] rounded-sm border border-[var(--muted-foreground)] bg-[var(--secondary)]" />
+  );
+}
+
+function SelectedKnob() {
+  return (
+    <div className="h-[13px] w-[13px] rounded-sm border-[1.5px] border-[var(--primary)] bg-[var(--secondary)]" />
+  );
+}
+
+function PulseChart() {
+  return (
+    <div className="flex items-end gap-px rounded-lg bg-[var(--secondary)] px-4 py-3" style={{ height: 220 }}>
+      {PULSE_BARS.map((bar, i) => (
+        <div
+          key={i}
+          className="flex w-5 cursor-ns-resize flex-col items-center justify-end"
+          style={{ height: "100%" }}
+        >
+          {bar.type === "anchor" ? <AnchorKnob /> : bar.type === "selected" ? <SelectedKnob /> : <InterpKnob />}
+          <div
+            className={`${
+              bar.type === "anchor"
+                ? "w-[3px] bg-[var(--primary)]"
+                : bar.type === "selected"
+                  ? "w-[2px] bg-[var(--primary)] opacity-70"
+                  : "w-[2px] bg-[var(--muted-foreground)]"
+            }`}
+            style={{ height: bar.h }}
+          />
+        </div>
+      ))}
     </div>
   );
 }
