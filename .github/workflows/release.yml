@@ -61,10 +61,16 @@ jobs:
             DG-LAB Coyote 3.0 第三方控制器。
 
             ### 下载说明
-            - **Windows**: 下载 `.msi` 或 `.exe` 安装包
-            - **macOS (Apple Silicon)**: 下载 `aarch64.dmg`
-            - **macOS (Intel)**: 下载 `x64.dmg`
-            - **Linux**: 下载 `.deb` 或 `.AppImage`
+
+            | 平台 | 文件 | 说明 |
+            |------|------|------|
+            | **Windows (x64)** | `_x64-setup.exe` | 推荐，安装向导 |
+            | **Windows (x64)** | `_x64_en-US.msi` | 静默安装用 |
+            | **macOS (Apple Silicon)** | `_aarch64.dmg` | M1/M2/M3/M4 |
+            | **macOS (Intel)** | `_x64.dmg` | Intel Mac |
+            | **Linux (x64)** | `_amd64.deb` | Debian/Ubuntu |
+            | **Linux (x64)** | `_amd64.AppImage` | 通用 |
+            | **Linux (x64)** | `.x86_64.rpm` | Fedora/RHEL |
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
