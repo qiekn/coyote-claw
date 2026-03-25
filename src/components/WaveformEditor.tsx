@@ -236,11 +236,11 @@ function SelectedKnob() {
 
 function PulseChart() {
   return (
-    <div className="flex items-end gap-px rounded-lg bg-[var(--secondary)] px-4 py-3" style={{ height: 220 }}>
+    <div className="flex items-end justify-start gap-px rounded-lg bg-[var(--secondary)] px-4 py-3" style={{ height: 220 }}>
       {PULSE_BARS.map((bar, i) => (
         <div
           key={i}
-          className="flex w-5 cursor-ns-resize flex-col items-center justify-end"
+          className="flex w-5 shrink-0 cursor-ns-resize flex-col items-center justify-end"
           style={{ height: "100%" }}
         >
           {bar.type === "anchor" ? <AnchorKnob /> : bar.type === "selected" ? <SelectedKnob /> : <InterpKnob />}
