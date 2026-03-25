@@ -1,0 +1,222 @@
+#!/usr/bin/env python3
+"""Generate waveform-format.svg - 8-byte HEX waveform unit diagram."""
+
+svg = """\
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 560" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <linearGradient id="freqGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="intGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="560" fill="url(#bgGrad)" rx="12"/>
+
+  <!-- Title -->
+  <text x="410" y="36" text-anchor="middle" fill="#e2e8f0" font-size="18" font-weight="600">Waveform Data Format (V3 Protocol)</text>
+  <text x="410" y="54" text-anchor="middle" fill="#64748b" font-size="11">Each waveform unit = 16 HEX characters (8 bytes) = 100ms output</text>
+
+  <!-- ==================== Main Byte Layout ==================== -->
+  <rect x="40" y="74" width="740" height="130" rx="8" fill="#1a1a2e" fill-opacity="0.8" stroke="#334155" stroke-width="1"/>
+
+  <!-- Section label -->
+  <text x="410" y="96" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="500">16-Character HEX String (8 Bytes)</text>
+
+  <!-- 8 boxes evenly spaced: x starts at 60, each box=76 wide, gap=8 -->
+
+  <!-- Frequency byte 1 -->
+  <rect x="60" y="108" width="76" height="48" rx="4" fill="url(#freqGrad)" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="98" y="130" text-anchor="middle" fill="#fff" font-size="16" font-weight="700" font-family="'Consolas', 'Courier New', monospace">FF</text>
+  <text x="98" y="148" text-anchor="middle" fill="#93c5fd" font-size="9">Freq 1</text>
+
+  <!-- Frequency byte 2 -->
+  <rect x="144" y="108" width="76" height="48" rx="4" fill="url(#freqGrad)" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="182" y="130" text-anchor="middle" fill="#fff" font-size="16" font-weight="700" font-family="'Consolas', 'Courier New', monospace">FF</text>
+  <text x="182" y="148" text-anchor="middle" fill="#93c5fd" font-size="9">Freq 2</text>
+
+  <!-- Frequency byte 3 -->
+  <rect x="228" y="108" width="76" height="48" rx="4" fill="url(#freqGrad)" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="266" y="130" text-anchor="middle" fill="#fff" font-size="16" font-weight="700" font-family="'Consolas', 'Courier New', monospace">FF</text>
+  <text x="266" y="148" text-anchor="middle" fill="#93c5fd" font-size="9">Freq 3</text>
+
+  <!-- Frequency byte 4 -->
+  <rect x="312" y="108" width="76" height="48" rx="4" fill="url(#freqGrad)" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="350" y="130" text-anchor="middle" fill="#fff" font-size="16" font-weight="700" font-family="'Consolas', 'Courier New', monospace">FF</text>
+  <text x="350" y="148" text-anchor="middle" fill="#93c5fd" font-size="9">Freq 4</text>
+
+  <!-- Divider gap visual -->
+  <rect x="394" y="114" width="4" height="36" rx="2" fill="#334155"/>
+
+  <!-- Intensity byte 1 -->
+  <rect x="406" y="108" width="76" height="48" rx="4" fill="url(#intGrad)" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="444" y="130" text-anchor="middle" fill="#fff" font-size="16" font-weight="700" font-family="'Consolas', 'Courier New', monospace">II</text>
+  <text x="444" y="148" text-anchor="middle" fill="#fca5a5" font-size="9">Int 1</text>
+
+  <!-- Intensity byte 2 -->
+  <rect x="490" y="108" width="76" height="48" rx="4" fill="url(#intGrad)" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="528" y="130" text-anchor="middle" fill="#fff" font-size="16" font-weight="700" font-family="'Consolas', 'Courier New', monospace">II</text>
+  <text x="528" y="148" text-anchor="middle" fill="#fca5a5" font-size="9">Int 2</text>
+
+  <!-- Intensity byte 3 -->
+  <rect x="574" y="108" width="76" height="48" rx="4" fill="url(#intGrad)" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="612" y="130" text-anchor="middle" fill="#fff" font-size="16" font-weight="700" font-family="'Consolas', 'Courier New', monospace">II</text>
+  <text x="612" y="148" text-anchor="middle" fill="#fca5a5" font-size="9">Int 3</text>
+
+  <!-- Intensity byte 4 -->
+  <rect x="658" y="108" width="76" height="48" rx="4" fill="url(#intGrad)" stroke="#ef4444" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="696" y="130" text-anchor="middle" fill="#fff" font-size="16" font-weight="700" font-family="'Consolas', 'Courier New', monospace">II</text>
+  <text x="696" y="148" text-anchor="middle" fill="#fca5a5" font-size="9">Int 4</text>
+
+  <!-- Bracket: Frequency -->
+  <line x1="60" y1="164" x2="388" y2="164" stroke="#3b82f6" stroke-width="1.5"/>
+  <line x1="60" y1="160" x2="60" y2="168" stroke="#3b82f6" stroke-width="1.5"/>
+  <line x1="388" y1="160" x2="388" y2="168" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="224" y="182" text-anchor="middle" fill="#3b82f6" font-size="10" font-weight="600">4x Frequency Bytes (value: 10\u2013240)</text>
+
+  <!-- Bracket: Intensity -->
+  <line x1="406" y1="164" x2="734" y2="164" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="406" y1="160" x2="406" y2="168" stroke="#ef4444" stroke-width="1.5"/>
+  <line x1="734" y1="160" x2="734" y2="168" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="570" y="182" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="600">4x Intensity Bytes (value: 0\u2013100)</text>
+
+  <!-- Example value -->
+  <text x="410" y="200" text-anchor="middle" fill="#475569" font-size="11" font-style="italic" font-family="'Consolas', monospace">Example: "0A0A0A0A64646464"  (Freq=10 each, Int=100 each)</text>
+
+  <!-- ==================== Timing Breakdown ==================== -->
+  <rect x="40" y="218" width="740" height="120" rx="8" fill="#1a1a2e" fill-opacity="0.8" stroke="#334155" stroke-width="1"/>
+  <text x="410" y="242" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="500">Timing: Each Freq+Int Pair = 25ms Output Window</text>
+
+  <!-- 4 time slots -->
+  <rect x="72" y="256" width="156" height="40" rx="6" fill="#1e1e3a" stroke="#6366f1" stroke-width="1"/>
+  <text x="150" y="274" text-anchor="middle" fill="#a5b4fc" font-size="10" font-weight="600">0\u201325ms</text>
+  <text x="150" y="288" text-anchor="middle" fill="#6366f1" font-size="9">Freq[0] + Int[0]</text>
+
+  <rect x="240" y="256" width="156" height="40" rx="6" fill="#1e1e3a" stroke="#6366f1" stroke-width="1"/>
+  <text x="318" y="274" text-anchor="middle" fill="#a5b4fc" font-size="10" font-weight="600">25\u201350ms</text>
+  <text x="318" y="288" text-anchor="middle" fill="#6366f1" font-size="9">Freq[1] + Int[1]</text>
+
+  <rect x="408" y="256" width="156" height="40" rx="6" fill="#1e1e3a" stroke="#6366f1" stroke-width="1"/>
+  <text x="486" y="274" text-anchor="middle" fill="#a5b4fc" font-size="10" font-weight="600">50\u201375ms</text>
+  <text x="486" y="288" text-anchor="middle" fill="#6366f1" font-size="9">Freq[2] + Int[2]</text>
+
+  <rect x="576" y="256" width="156" height="40" rx="6" fill="#1e1e3a" stroke="#6366f1" stroke-width="1"/>
+  <text x="654" y="274" text-anchor="middle" fill="#a5b4fc" font-size="10" font-weight="600">75\u2013100ms</text>
+  <text x="654" y="288" text-anchor="middle" fill="#6366f1" font-size="9">Freq[3] + Int[3]</text>
+
+  <!-- Total duration bracket -->
+  <line x1="72" y1="306" x2="732" y2="306" stroke="#f59e0b" stroke-width="1.5"/>
+  <line x1="72" y1="302" x2="72" y2="310" stroke="#f59e0b" stroke-width="1.5"/>
+  <line x1="732" y1="302" x2="732" y2="310" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="410" y="326" text-anchor="middle" fill="#f59e0b" font-size="11" font-weight="600">Total = 100ms per waveform unit</text>
+
+  <!-- ==================== Frequency Value Reference ==================== -->
+  <rect x="40" y="352" width="360" height="192" rx="8" fill="#1a1a2e" fill-opacity="0.8" stroke="#334155" stroke-width="1"/>
+  <text x="220" y="376" text-anchor="middle" fill="#3b82f6" font-size="12" font-weight="600">Frequency (FF) \u2014 Compressed Mapping</text>
+
+  <!-- Table header -->
+  <rect x="60" y="388" width="100" height="22" rx="3" fill="#1e3a5c"/>
+  <text x="110" y="403" text-anchor="middle" fill="#93c5fd" font-size="10" font-weight="600">Input Value</text>
+  <rect x="170" y="388" width="100" height="22" rx="3" fill="#1e3a5c"/>
+  <text x="220" y="403" text-anchor="middle" fill="#93c5fd" font-size="10" font-weight="600">Wave Freq</text>
+  <rect x="280" y="388" width="100" height="22" rx="3" fill="#1e3a5c"/>
+  <text x="330" y="403" text-anchor="middle" fill="#93c5fd" font-size="10" font-weight="600">Pulse Rate</text>
+
+  <!-- Row separator lines -->
+  <line x1="60" y1="413" x2="380" y2="413" stroke="#334155" stroke-width="0.5"/>
+  <line x1="60" y1="433" x2="380" y2="433" stroke="#334155" stroke-width="0.5"/>
+  <line x1="60" y1="453" x2="380" y2="453" stroke="#334155" stroke-width="0.5"/>
+  <line x1="60" y1="473" x2="380" y2="473" stroke="#334155" stroke-width="0.5"/>
+  <line x1="60" y1="493" x2="380" y2="493" stroke="#334155" stroke-width="0.5"/>
+
+  <!-- Column separator lines -->
+  <line x1="165" y1="388" x2="165" y2="510" stroke="#334155" stroke-width="0.5"/>
+  <line x1="275" y1="388" x2="275" y2="510" stroke="#334155" stroke-width="0.5"/>
+
+  <!-- Table rows -->
+  <text x="110" y="427" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace">10</text>
+  <text x="220" y="427" text-anchor="middle" fill="#cbd5e1" font-size="10">10ms</text>
+  <text x="330" y="427" text-anchor="middle" fill="#cbd5e1" font-size="10">100 Hz</text>
+
+  <text x="110" y="447" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace">50</text>
+  <text x="220" y="447" text-anchor="middle" fill="#cbd5e1" font-size="10">50ms</text>
+  <text x="330" y="447" text-anchor="middle" fill="#cbd5e1" font-size="10">20 Hz</text>
+
+  <text x="110" y="467" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace">100</text>
+  <text x="220" y="467" text-anchor="middle" fill="#cbd5e1" font-size="10">100ms</text>
+  <text x="330" y="467" text-anchor="middle" fill="#cbd5e1" font-size="10">10 Hz</text>
+
+  <text x="110" y="487" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace">200</text>
+  <text x="220" y="487" text-anchor="middle" fill="#cbd5e1" font-size="10">650ms</text>
+  <text x="330" y="487" text-anchor="middle" fill="#cbd5e1" font-size="10">1.5 Hz</text>
+
+  <text x="110" y="507" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace">240</text>
+  <text x="220" y="507" text-anchor="middle" fill="#cbd5e1" font-size="10">1000ms</text>
+  <text x="330" y="507" text-anchor="middle" fill="#cbd5e1" font-size="10">1 Hz</text>
+
+  <!-- Note about compression -->
+  <text x="220" y="536" text-anchor="middle" fill="#64748b" font-size="8" font-style="italic">Non-linear: 10\u2013100 maps linearly, 100\u2013240 maps 100ms\u20131000ms</text>
+
+  <!-- ==================== Intensity Value Explanation ==================== -->
+  <rect x="420" y="352" width="360" height="192" rx="8" fill="#1a1a2e" fill-opacity="0.8" stroke="#334155" stroke-width="1"/>
+  <text x="600" y="376" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="600">Intensity (II) \u2014 Pulse Width</text>
+
+  <!-- Description -->
+  <text x="444" y="396" fill="#94a3b8" font-size="10">Relative pulse width controls perceived strength</text>
+
+  <!-- Visual bars with labels on the right -->
+  <!-- 0% bar -->
+  <text x="444" y="422" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace" font-weight="600">  0</text>
+  <rect x="472" y="412" width="280" height="14" rx="2" fill="none" stroke="#334155" stroke-width="0.8"/>
+  <text x="620" y="422" text-anchor="middle" fill="#64748b" font-size="9">No pulse (silence)</text>
+
+  <!-- 25% bar -->
+  <text x="444" y="448" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace" font-weight="600"> 25</text>
+  <rect x="472" y="438" width="70" height="14" rx="2" fill="#ef4444" fill-opacity="0.35"/>
+  <rect x="472" y="438" width="280" height="14" rx="2" fill="none" stroke="#334155" stroke-width="0.8"/>
+  <text x="620" y="448" text-anchor="middle" fill="#94a3b8" font-size="9">Light</text>
+
+  <!-- 50% bar -->
+  <text x="444" y="474" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace" font-weight="600"> 50</text>
+  <rect x="472" y="464" width="140" height="14" rx="2" fill="#ef4444" fill-opacity="0.5"/>
+  <rect x="472" y="464" width="280" height="14" rx="2" fill="none" stroke="#334155" stroke-width="0.8"/>
+  <text x="620" y="474" text-anchor="middle" fill="#94a3b8" font-size="9">Moderate</text>
+
+  <!-- 75% bar -->
+  <text x="444" y="500" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace" font-weight="600"> 75</text>
+  <rect x="472" y="490" width="210" height="14" rx="2" fill="#ef4444" fill-opacity="0.7"/>
+  <rect x="472" y="490" width="280" height="14" rx="2" fill="none" stroke="#334155" stroke-width="0.8"/>
+  <text x="620" y="500" text-anchor="middle" fill="#94a3b8" font-size="9">Strong</text>
+
+  <!-- 100% bar -->
+  <text x="444" y="526" fill="#cbd5e1" font-size="10" font-family="'Consolas', monospace" font-weight="600">100</text>
+  <rect x="472" y="516" width="280" height="14" rx="2" fill="#ef4444" fill-opacity="0.9"/>
+  <rect x="472" y="516" width="280" height="14" rx="2" fill="none" stroke="#ef4444" stroke-width="0.8" stroke-opacity="0.6"/>
+  <text x="620" y="526" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">Maximum</text>
+
+  <!-- Queue limits info box -->
+  <rect x="420" y="538" width="360" height="0" rx="4"/>
+</svg>"""
+
+output_path = "C:/msys64/home/user/projects/coyote-claw/notes/docs/images/waveform-format.svg"
+with open(output_path, "w", encoding="utf-8") as f:
+    f.write(svg)
+print(f"Written: {output_path}")
