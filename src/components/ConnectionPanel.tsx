@@ -6,50 +6,39 @@ interface Props {
   qrcodeUrl: string;
 }
 
-const STATUS_TEXT: Record<ConnectionStatus, string> = {
-  Disconnected: "未连接",
-  WaitingForApp: "等待 APP 扫码",
-  AppConnected: "APP 已连接，绑定中...",
-  Paired: "已配对",
-};
-
-const STATUS_COLOR: Record<ConnectionStatus, string> = {
-  Disconnected: "text-red-400",
-  WaitingForApp: "text-yellow-400",
-  AppConnected: "text-blue-400",
-  Paired: "text-green-400",
-};
-
 export function ConnectionPanel({ status, qrcodeUrl }: Props) {
+  if (status === "Paired") return null;
+
   return (
-    <div className="flex flex-col items-center gap-4 rounded-xl bg-gray-800 p-6">
-      <div className="flex items-center gap-2">
-        <div
-          className={`h-3 w-3 rounded-full ${
-            status === "Paired"
-              ? "bg-green-400"
-              : status === "AppConnected"
-                ? "bg-blue-400"
-                : status === "WaitingForApp"
-                  ? "bg-yellow-400"
-                  : "bg-red-400"
-          }`}
-        />
-        <span className={`text-lg font-medium ${STATUS_COLOR[status]}`}>
-          {STATUS_TEXT[status]}
-        </span>
+    <div className="flex flex-col items-center gap-5 rounded-lg border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm">
+      <span className="text-base font-semibold text-[var(--foreground)]">
+        扫码连接
+      </span>
+
+      <div className="rounded-md bg-white p-2">
+        {qrcodeUrl ? (
+          <QRCodeSVG value={qrcodeUrl} size={168} />
+        ) : (
+          <div className="flex h-[168px] w-[168px] items-center justify-center text-sm text-gray-400">
+            QR
+          </div>
+        )}
       </div>
 
-      {status !== "Paired" && qrcodeUrl && (
-        <div className="rounded-lg bg-white p-3">
-          <QRCodeSVG value={qrcodeUrl} size={200} />
-        </div>
-      )}
+      <span className="text-[13px] text-[var(--muted-foreground)]">
+        打开 DG-LAB APP 扫描二维码
+      </span>
 
-      {status !== "Paired" && (
-        <p className="text-center text-sm text-gray-400">
-          打开 DG-LAB APP 扫描二维码连接
-        </p>
+      {qrcodeUrl && (
+        <div className="flex items-center gap-1.5 rounded-md bg-[var(--secondary)] px-3 py-1.5">
+          <svg className="h-3.5 w-3.5 fill-[var(--muted-foreground)]" viewBox="0 0 24 24">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+          </svg>
+          <span className="text-[11px] font-medium text-[var(--muted-foreground)]">
+            {qrcodeUrl}
+          </span>
+        </div>
       )}
     </div>
   );
