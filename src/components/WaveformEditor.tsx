@@ -143,13 +143,18 @@ export function WaveformEditor({ onBack }: { onBack: () => void }) {
             </div>
 
             {/* Pulse bar editor */}
-            <div className="flex items-end gap-1 rounded-lg bg-[var(--secondary)] p-4" style={{ height: 120 }}>
+            <div className="flex items-end gap-3 rounded-lg bg-[var(--secondary)] p-6" style={{ height: 180 }}>
               {[10, 20, 35, 50, 65, 75, 85, 95].map((h, i) => (
                 <div
                   key={i}
-                  className="flex-1 cursor-ns-resize rounded-sm bg-[var(--primary)] transition-all hover:opacity-80"
+                  className="relative flex flex-1 cursor-ns-resize flex-col items-center"
                   style={{ height: `${h}%` }}
-                />
+                >
+                  {/* Drag handle */}
+                  <div className="absolute -top-1.5 h-3 w-3 rounded-sm border-2 border-[var(--foreground)] bg-transparent" />
+                  {/* Bar body */}
+                  <div className="mt-2 h-full w-full rounded-sm bg-[var(--primary)] opacity-60 transition-all hover:opacity-90" />
+                </div>
               ))}
             </div>
 

@@ -64,7 +64,7 @@ function WaveCard({
   );
 }
 
-export function WaveformPanel({ disabled, onSelect: _onSelect, onClear: _onClear, onOpenManager }: Props) {
+export function WaveformPanel({ disabled: _disabled, onSelect: _onSelect, onClear: _onClear, onOpenManager }: Props) {
   return (
     <div className="flex flex-col gap-5 rounded-lg border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm">
       {/* Header */}
