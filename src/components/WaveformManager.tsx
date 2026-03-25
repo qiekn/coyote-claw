@@ -1,3 +1,8 @@
+interface WaveManagerProps {
+  onBack: () => void;
+  onEdit: () => void;
+}
+
 interface WaveItem {
   name: string;
   channel?: string;
@@ -40,7 +45,7 @@ function WaveformBars({ bars }: { bars: number[] }) {
   );
 }
 
-function WaveListItem({ wave }: { wave: WaveItem }) {
+function WaveListItem({ wave, onEdit }: { wave: WaveItem; onEdit: () => void }) {
   return (
     <div className="flex flex-col gap-4 rounded-lg border border-[var(--border)] bg-[var(--card)] p-5">
       {/* Header row */}
@@ -74,8 +79,7 @@ function WaveListItem({ wave }: { wave: WaveItem }) {
           选择为 B 通道
         </button>
         <div className="ml-auto flex items-center gap-2">
-          <button className="rounded-md px-3 py-1.5 text-xs text-[var(--muted-foreground)] hover:bg-[var(--secondary)]">
-            编辑
+          <button onClick={onEdit} className="rounded-md px-3 py-1.5 text-xs text-[var(--muted-foreground)] hover:bg-[var(--secondary)]">
           </button>
           <button className="rounded-md px-3 py-1.5 text-xs text-[var(--muted-foreground)] hover:bg-[var(--secondary)]">
             复制
@@ -89,12 +93,15 @@ function WaveListItem({ wave }: { wave: WaveItem }) {
   );
 }
 
-export function WaveformManager() {
+export function WaveformManager({ onBack, onEdit }: WaveManagerProps) {
   return (
     <div className="font-primary flex flex-col gap-6 rounded-xl bg-[var(--background)] p-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
+          <button onClick={onBack} className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+            ← 返回
+          </button>
           <svg className="h-5 w-5 fill-none stroke-[var(--foreground)]" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M2 13a2 2 0 0 0 2-2V7a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0V4a2 2 0 0 1 4 0v13a2 2 0 0 0 4 0v-4a2 2 0 0 1 2-2" />
           </svg>
@@ -132,7 +139,7 @@ export function WaveformManager() {
       {/* Wave list */}
       <div className="flex flex-col gap-3">
         {DEMO_WAVES.map((wave) => (
-          <WaveListItem key={wave.name} wave={wave} />
+          <WaveListItem key={wave.name} wave={wave} onEdit={onEdit} />
         ))}
       </div>
 

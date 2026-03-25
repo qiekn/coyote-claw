@@ -2,6 +2,7 @@ interface Props {
   disabled: boolean;
   onSelect: (channel: string, waveform: string) => void;
   onClear: (channel: number) => void;
+  onOpenManager: () => void;
 }
 
 const PRESETS: { name: string; data: string; channel: string; bars: number[] }[] = [
@@ -63,7 +64,7 @@ function WaveCard({
   );
 }
 
-export function WaveformPanel({ disabled, onSelect: _onSelect, onClear: _onClear }: Props) {
+export function WaveformPanel({ disabled, onSelect: _onSelect, onClear: _onClear, onOpenManager }: Props) {
   return (
     <div className="flex flex-col gap-5 rounded-lg border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm">
       {/* Header */}
@@ -75,6 +76,7 @@ export function WaveformPanel({ disabled, onSelect: _onSelect, onClear: _onClear
           <span className="text-base font-semibold text-[var(--foreground)]">当前波形</span>
         </div>
         <button
+          onClick={onOpenManager}
           disabled={disabled}
           className="rounded-md px-3 py-1.5 text-sm text-[var(--muted-foreground)] hover:bg-[var(--secondary)] disabled:opacity-40"
         >

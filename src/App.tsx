@@ -1,13 +1,32 @@
+import { useState } from "react";
 import { ConnectionPanel } from "./components/ConnectionPanel";
 import { StrengthPanel } from "./components/StrengthPanel";
 import { WaveformPanel } from "./components/WaveformPanel";
+import { WaveformManager } from "./components/WaveformManager";
+import { WaveformEditor } from "./components/WaveformEditor";
 import { useWsServer } from "./hooks/useWsServer";
+
+type View = "home" | "manager" | "editor";
 
 function App() {
   const { status, qrcodeUrl, strength, sendStrength, sendWaveform, clearWaveform } =
     useWsServer();
+  const [view, setView] = useState<View>("home");
 
   const isPaired = status === "Paired";
+
+  if (view === "editor") {
+    return <WaveformEditor onBack={() => setView("manager")} />;
+  }
+
+  if (view === "manager") {
+    return (
+      <WaveformManager
+        onBack={() => setView("home")}
+        onEdit={() => setView("editor")}
+      />
+    );
+  }
 
   return (
     <main className="font-primary flex min-h-screen flex-col gap-6 bg-[var(--background)] p-6">
@@ -34,6 +53,7 @@ function App() {
         disabled={!isPaired}
         onSelect={sendWaveform}
         onClear={clearWaveform}
+        onOpenManager={() => setView("manager")}
       />
     </main>
   );

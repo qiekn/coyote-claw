@@ -1,10 +1,10 @@
-export function WaveformEditor() {
+export function WaveformEditor({ onBack }: { onBack: () => void }) {
   return (
     <div className="font-primary flex flex-col overflow-hidden rounded-xl bg-[var(--background)]">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[var(--border)] px-6 py-4">
         <div className="flex items-center gap-3">
-          <button className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+          <button onClick={onBack} className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
             ← 返回
           </button>
           <span className="text-base font-bold text-[var(--foreground)]">弹跳</span>
