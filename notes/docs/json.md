@@ -10,11 +10,6 @@
 
 ![单元拆解 (手绘)](images/waveform-unit-breakdown.png)
 
-```
-[FF]  [FF]  [FF]  [FF]  [II]  [II]  [II]  [II]
-频率  频率  频率  频率  强度  强度  强度  强度
-25ms  25ms  25ms  25ms  25ms  25ms  25ms  25ms
-```
 
 - **前 4 字节**: 频率值，有效范围 `10~240`
     - 0~30 Hz 偏低频，有冲击感
