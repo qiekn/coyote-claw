@@ -51,8 +51,8 @@ Phase 2: Remote mode (standalone WS Server on VPS)
 | Component      | Technology            |
 |----------------|-----------------------|
 | Desktop App    | Tauri v2              |
-| Frontend       | React + TypeScript    |
-| WS Server      | Rust (embedded in Tauri + standalone for VPS) |
+| Frontend       | React + TypeScript + TailwindCSS v4 |
+| WS Server      | Rust (tokio-tungstenite, embedded in Tauri + standalone for VPS) |
 | Protocol       | DG-LAB Socket v2      |
 | Documentation  | Zensical (in /notes)  |
 | UE Integration | Deferred (WebSocket API first) |
@@ -70,6 +70,33 @@ coyote-claw/
 ├── CLAUDE.md              # This file
 ├── README.md
 ├── LICENSE                # GPLv3
+├── package.json           # pnpm + Vite + React
+├── vite.config.ts
+├── tsconfig.json
+├── index.html             # Vite entry
+├── msvc-env.sh            # MSVC env for MSYS2 builds
+├── src/                   # React frontend
+│   ├── main.tsx
+│   ├── App.tsx
+│   ├── index.css          # TailwindCSS v4
+│   ├── components/
+│   │   ├── ConnectionPanel.tsx
+│   │   ├── StrengthPanel.tsx
+│   │   └── WaveformPanel.tsx
+│   └── hooks/
+│       └── useWsServer.ts
+├── src-tauri/             # Rust backend (Tauri v2)
+│   ├── Cargo.toml
+│   ├── tauri.conf.json
+│   └── src/
+│       ├── main.rs
+│       ├── lib.rs         # Tauri commands & app setup
+│       └── ws/            # WebSocket server module
+│           ├── mod.rs
+│           ├── server.rs      # TCP listener, connection lifecycle
+│           ├── connection.rs  # Connection registry & pairing
+│           ├── message.rs     # Message routing & protocol handling
+│           └── protocol.rs    # DG-LAB types & constants
 ├── notes/                 # Zensical documentation site
 │   ├── docs/
 │   │   ├── index.md
@@ -96,3 +123,24 @@ Official open-source docs are in `notes/DG-LAB-OPENSOURCE/`:
 - Commit messages: Follow `.claude/rules/git-workflow.md`
 - PawPrints (传感器配件): Ignore for now, not in scope
 - Coyote V2 protocol: Ignore, we only target V3
+- Package manager: pnpm
+- Build tool: Vite
+- MSYS2 UCRT: run `source msvc-env.sh` before `cargo build` if INCLUDE/LIB not set
+
+## Tauri Commands (Frontend → Rust)
+
+| Command | Params | Description |
+|---------|--------|-------------|
+| `get_qrcode_url` | - | QR code URL for APP pairing |
+| `send_strength` | channel, mode, value | Strength control |
+| `send_waveform` | channel, waveform | Send waveform data |
+| `clear_waveform` | channel | Clear waveform queue |
+| `get_connection_status` | - | Current connection status |
+
+## Tauri Events (Rust → Frontend)
+
+| Event | Payload | Description |
+|-------|---------|-------------|
+| `ws:connection-status` | ConnectionStatus | Status change |
+| `ws:strength-update` | {a, b, aLimit, bLimit} | Strength feedback |
+| `ws:feedback` | string | APP button feedback |
