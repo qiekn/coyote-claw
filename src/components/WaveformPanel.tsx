@@ -77,8 +77,7 @@ export function WaveformPanel({ disabled, onSelect: _onSelect, onClear: _onClear
         </div>
         <button
           onClick={onOpenManager}
-          disabled={disabled}
-          className="rounded-md px-3 py-1.5 text-sm text-[var(--muted-foreground)] hover:bg-[var(--secondary)] disabled:opacity-40"
+          className="rounded-md px-3 py-1.5 text-sm text-[var(--muted-foreground)] hover:bg-[var(--secondary)]"
         >
           波形管理器
         </button>
