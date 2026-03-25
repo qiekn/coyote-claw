@@ -9,15 +9,7 @@ Coyote Claw 是一个开源的 [DG-LAB](https://www.dungeon-lab.com/) 郊狼 3.0
 
 ## 工作原理
 
-```
-┌─────────────────────────────────┐
-│  Coyote Claw (Tauri v2)        │
-│  ┌───────────┐ ┌─────────────┐ │         ┌──────────────┐         ┌────────────┐
-│  │ React UI  │ │ Rust WS     │ │   WS    │  DG-LAB APP  │   BLE   │ Coyote 3.0 │
-│  │           │ │ Server      │←┼────────→│  (手机)       │←───────→│ (设备)      │
-│  └───────────┘ └─────────────┘ │         └──────────────┘         └────────────┘
-└─────────────────────────────────┘
-```
+![架构图](notes/docs/images/architecture.svg)
 
 1. 打开 Coyote Claw，自动启动本地 WebSocket 服务器 (端口 9999)
 2. 用 DG-LAB 官方 APP 扫描界面上的二维码
@@ -99,3 +91,4 @@ zensical serve --open
 
 - [DG-LAB](https://www.dungeon-lab.com/) — 设备制造商及开源协议文档
 - [Tauri](https://tauri.app/) — 跨平台桌面应用框架
+- [AnyRouter](https://anyrouter.top/register?aff=H3rP) — Claude 公益站
