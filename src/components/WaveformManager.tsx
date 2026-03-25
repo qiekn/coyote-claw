@@ -33,12 +33,12 @@ const DEMO_WAVES: WaveItem[] = [
 
 function WaveformBars({ bars }: { bars: number[] }) {
   return (
-    <div className="flex w-full items-end gap-px rounded-lg bg-[var(--secondary)] p-4" style={{ height: 64 }}>
+    <div className="flex w-full items-end gap-px rounded-md bg-[var(--secondary)] px-3 py-2" style={{ height: 48 }}>
       {bars.map((h, i) => (
         <div
           key={i}
-          className="flex-1 rounded-sm bg-[var(--primary)]"
-          style={{ height: h }}
+          className="shrink-0 bg-[var(--primary)]"
+          style={{ width: 2, height: h }}
         />
       ))}
     </div>
