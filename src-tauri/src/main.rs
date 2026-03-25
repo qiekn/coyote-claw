@@ -1,4 +1,4 @@
-#[cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
     coyote_claw_lib::run()
