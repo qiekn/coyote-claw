@@ -91,7 +91,10 @@ WebSocket 服务器和 DG-LAB APP 之间所有消息均为 JSON:
 
 ## 消息类型
 
-### 控制器 &rarr; APP (经服务器转发)
+!!! info "适用范围"
+    以下协议描述的是 **WS 服务器 &harr; DG-LAB APP** 之间的固定协议 (无法修改)。控制器与 WS 服务器之间的协议后续会设计独立的 JSON API。
+
+### 服务器 &rarr; APP
 
 #### 通道强度修改
 
@@ -141,7 +144,7 @@ WebSocket 服务器和 DG-LAB APP 之间所有消息均为 JSON:
 | :- | :- | :- |
 | 通道 | `1` = A, `2` = B | 注意这里是数字不是字母 |
 
-### APP &rarr; 控制器
+### APP &rarr; 服务器
 
 #### 强度反馈
 
