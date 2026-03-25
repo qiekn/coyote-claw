@@ -4,7 +4,7 @@
 
 DG-LAB 官方在 3.4.4 版本开放了波形文件导出功能。`.pulse` 是官方定义的波形文件格式，社区可通过 [DG-BBS 波形分享](https://dg-bbs.com/share) 分享和预览波形。
 
-![pulse 文件格式](images/pulse-format.png)
+![pulse 文件格式](images/pulse-format.svg)
 
 ## 整体结构
 
