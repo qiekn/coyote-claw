@@ -57,47 +57,120 @@ APP 回复: `{"type":"bind","clientId":"...","targetId":"...","message":"DGLAB"}
 
 ## 消息格式
 
-所有 WebSocket 消息均为 JSON:
+WebSocket 服务器和 DG-LAB APP 之间所有消息均为 JSON:
 
 ```json
 {
   "type": "xxx",
-  "clientId": "uuid-v4",
-  "targetId": "uuid-v4",
+  "clientId": "xxxx-xxxx-xxxx-xxxx",
+  "targetId": "xxxx-xxxx-xxxx-xxxx",
   "message": "xxx"
 }
 ```
 
-- 最大长度: 1950 字符
-- ID 格式: UUID v4
+**字段说明：**
+
+| 字段 | 类型 | 说明 |
+| :- | :- | :- |
+| `type` | string | 消息类型: `bind` / `msg` / `break` / `heartbeat` / `error` |
+| `clientId` | string | 第三方控制器的 UUID |
+| `targetId` | string | DG-LAB APP 的 UUID |
+| `message` | string | 消息体 (始终是字符串) |
+
+**type 说明：**
+
+| type | 说明 |
+| :- | :- |
+| `bind` | 关系绑定 (连接/配对/断开) |
+| `msg` | 命令消息 (强度/波形/清空/反馈) |
+| `break` | 对方断开连接通知 |
+| `heartbeat` | 心跳 (默认 60s 间隔) |
+| `error` | 错误消息 |
+
+最大消息长度: **1950** 字符，超出会被 APP 丢弃。
 
 ## 消息类型
 
-### 控制器 → APP (经服务器转发)
+### 控制器 &rarr; APP (经服务器转发)
 
-| 操作 | message 格式 | 说明 |
+#### 通道强度修改
+
+`message` 格式: `strength-{通道}+{模式}+{值}`
+
+| 参数 | 取值 | 说明 |
 | :- | :- | :- |
-| 强度减 | `strength-{ch}+0+{val}` | ch: 1=A, 2=B |
-| 强度加 | `strength-{ch}+1+{val}` | val: 变化量 |
-| 强度设置 | `strength-{ch}+2+{val}` | val: 0-200 |
-| 发送波形 | `pulse-{ch}:[hex_data]` | ch: A 或 B |
-| 清空波形 | `clear-{ch}` | ch: 1=A, 2=B |
+| 通道 | `1` = A 通道, `2` = B 通道 | 选择控制哪个通道 |
+| 模式 | `0` = 降低, `1` = 增加, `2` = 设置为 | 强度变化方式 |
+| 值 | `0` ~ `200` | 变化量或目标值 |
 
-### APP → 控制器
+**示例：**
 
-| 操作 | message 格式 | 说明 |
+| 操作 | message |
+| :- | :- |
+| A 通道强度 +5 | `strength-1+1+5` |
+| B 通道强度归零 | `strength-2+2+0` |
+| B 通道强度 -20 | `strength-2+0+20` |
+| A 通道强度设为 35 | `strength-1+2+35` |
+
+#### 波形操作
+
+`message` 格式: `pulse-{通道}:[hex_data_array]`
+
+| 参数 | 取值 | 说明 |
 | :- | :- | :- |
-| 强度反馈 | `strength-{a}+{b}+{aLim}+{bLim}` | 4 个 0-200 值 |
-| 按钮反馈 | `feedback-{index}` | 0-4: A 通道, 5-9: B 通道 |
+| 通道 | `A` 或 `B` | 注意这里是字母不是数字 |
+
+```json
+{
+  "type": "msg",
+  "clientId": "xxxx",
+  "targetId": "xxxx",
+  "message": "pulse-A:[\"0A0A0A0A64646464\",\"0A0A0A0A32323232\"]"
+}
+```
+
+- 数组最大 **100** 个单元 (= 10 秒)
+- APP 波形队列最大 **500** 个单元 (= 50 秒)
+- 每个单元格式详见 [波形数据](json.md)
+
+#### 清空波形队列
+
+`message` 格式: `clear-{通道}`
+
+| 参数 | 取值 | 说明 |
+| :- | :- | :- |
+| 通道 | `1` = A, `2` = B | 注意这里是数字不是字母 |
+
+### APP &rarr; 控制器
+
+#### 强度反馈
+
+当 APP 中的通道强度或强度上限变化时，会上报：
+
+`message` 格式: `strength-{A强度}+{B强度}+{A上限}+{B上限}`
+
+所有值范围 `0` ~ `200`。
+
+#### 按钮反馈
+
+`message` 格式: `feedback-{index}`
+
+![APP 反馈按钮](images/app-channel-buttons.png)
+
+| index | 通道 | 按钮位置 |
+| :- | :- | :- |
+| 0 ~ 4 | A 通道 | 从左到右 |
+| 5 ~ 9 | B 通道 | 从左到右 |
 
 ### 系统消息
 
-| 类型 | 说明 |
-| :- | :- |
-| `bind` | 配对消息 |
-| `break` | 断开通知 (code: 209) |
-| `heartbeat` | 心跳 (60s 间隔) |
-| `error` | 错误消息 |
+| type | message | 说明 |
+| :- | :- | :- |
+| `bind` | `targetId` | 初始连接,服务器分配的 ID |
+| `bind` | `DGLAB` | APP 请求绑定 |
+| `bind` | `200` | 绑定成功 |
+| `break` | `209` | 对方断开连接 |
+| `heartbeat` | `200` | 心跳响应 |
 
 ## 错误码
 

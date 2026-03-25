@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" font-family="system-ui, -apple-system, sans-serif">
+  <style>
+    :root { --fg: #1a1a1a; --fg-dim: #666; --fg-faint: #999; --cell-bg: rgba(0,0,0,0.04); --line: #ccc; --accent-border: #d4a030; }
+    @media (prefers-color-scheme: dark) {
+      :root { --fg: #e4e4e7; --fg-dim: #a1a1aa; --fg-faint: #71717a; --cell-bg: rgba(255,255,255,0.06); --line: #52525b; --accent-border: #f59e0b; }
+    }
+    text { fill: var(--fg); }
+    .dim { fill: var(--fg-dim); }
+    .faint { fill: var(--fg-faint); }
+    .cell { stroke: var(--line); stroke-width: 1; fill: var(--cell-bg); }
+    .cell-bg { fill: var(--cell-bg); }
+    .border-accent { fill: none; stroke: var(--accent-border); stroke-width: 1.5; }
+    .title { font-size: 12px; fill: var(--fg-faint); }
+    .small { font-size: 11px; }
+    .sep { font-size: 15px; font-weight: 600; }
+    .dots { fill: var(--fg-faint); font-size: 14px; }
+  </style>
+
+  <!-- Row 1: Overall structure -->
+  <!-- Dungeonlab+pulse: -->
+  <text x="10" y="40" font-size="14" font-weight="600" font-family="monospace">Dungeonlab+pulse:</text>
+
+  <!-- 波形描述 group -->
+  <rect x="175" y="10" width="210" height="52" class="border-accent" rx="2"/>
+  <text x="280" y="27" text-anchor="middle" class="title">波形描述</text>
+  <line x1="245" y1="30" x2="245" y2="62" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <line x1="315" y1="30" x2="315" y2="62" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="210" y="50" text-anchor="middle" class="small">休息时长</text>
+  <text x="280" y="50" text-anchor="middle" class="small">速度倍率</text>
+  <text x="350" y="50" text-anchor="middle" class="small">尚不明确</text>
+
+  <!-- = -->
+  <text x="395" y="45" class="sep">=</text>
+
+  <!-- 小节描述 -->
+  <rect x="415" y="15" width="130" height="42" class="border-accent" rx="2"/>
+  <rect x="415" y="15" width="130" height="42" class="cell-bg" rx="2"/>
+  <text x="480" y="42" text-anchor="middle" font-weight="500">小节描述</text>
+
+  <!-- +section+ -->
+  <text x="560" y="42" font-family="monospace" class="small">+section+</text>
+
+  <!-- ... -->
+  <text x="647" y="42" class="dots">...</text>
+
+  <!-- +section+ -->
+  <text x="668" y="42" font-family="monospace" class="small">+section+</text>
+
+  <!-- 小节描述 -->
+  <rect x="760" y="15" width="130" height="42" class="border-accent" rx="2"/>
+  <rect x="760" y="15" width="130" height="42" class="cell-bg" rx="2"/>
+  <text x="825" y="42" text-anchor="middle" font-weight="500">小节描述</text>
+
+  <!-- Row 2: Section detail -->
+  <!-- 小节描述 header -->
+  <rect x="80" y="100" width="780" height="55" class="border-accent" rx="2"/>
+  <text x="470" y="118" text-anchor="middle" class="title">小节描述</text>
+  <line x1="80" y1="122" x2="860" y2="122" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+
+  <!-- Cells -->
+  <!-- 频率A -->
+  <rect x="80" y="122" width="75" height="33" class="cell-bg"/>
+  <line x1="155" y1="122" x2="155" y2="155" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="117" y="144" text-anchor="middle" class="small">频率A</text>
+
+  <!-- 频率B -->
+  <rect x="155" y="122" width="75" height="33" class="cell-bg"/>
+  <line x1="230" y1="122" x2="230" y2="155" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="192" y="144" text-anchor="middle" class="small">频率B</text>
+
+  <!-- 小节时长 -->
+  <rect x="230" y="122" width="85" height="33" class="cell-bg"/>
+  <line x1="315" y1="122" x2="315" y2="155" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="272" y="144" text-anchor="middle" class="small">小节时长</text>
+
+  <!-- 频率模式 -->
+  <rect x="315" y="122" width="85" height="33" class="cell-bg"/>
+  <line x1="400" y1="122" x2="400" y2="155" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="357" y="144" text-anchor="middle" class="small">频率模式</text>
+
+  <!-- 小节开关 -->
+  <rect x="400" y="122" width="85" height="33" class="cell-bg"/>
+  <line x1="485" y1="122" x2="485" y2="155" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="442" y="144" text-anchor="middle" class="small">小节开关</text>
+
+  <!-- / separator -->
+  <rect x="485" y="122" width="30" height="33" class="cell-bg"/>
+  <line x1="515" y1="122" x2="515" y2="155" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="500" y="144" text-anchor="middle" class="sep">/</text>
+
+  <!-- 强度-脉冲类型 -->
+  <rect x="515" y="122" width="120" height="33" class="cell-bg"/>
+  <line x1="635" y1="122" x2="635" y2="155" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="575" y="144" text-anchor="middle" class="small">强度-脉冲类型</text>
+
+  <!-- , ... -->
+  <rect x="635" y="122" width="40" height="33" class="cell-bg"/>
+  <line x1="675" y1="122" x2="675" y2="155" stroke="var(--line)" stroke-opacity="0.2" stroke-width="1"/>
+  <text x="655" y="144" text-anchor="middle" class="dots">...</text>
+
+  <!-- 强度-脉冲类型 -->
+  <rect x="675" y="122" width="120" height="33" class="cell-bg"/>
+  <text x="735" y="144" text-anchor="middle" class="small">强度-脉冲类型</text>
+
+  <!-- Bracket labels -->
+  <!-- 波形描述 bracket to row 1 -->
+  <line x1="80" y1="85" x2="485" y2="85" stroke="var(--line)" stroke-opacity="0.15" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="282" y="82" text-anchor="middle" font-size="10" fill-opacity="0.35">由逗号分隔</text>
+
+  <line x1="515" y1="85" x2="795" y2="85" stroke="#f59e0b" stroke-opacity="0.3" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="655" y="82" text-anchor="middle" font-size="10" fill="#f59e0b" fill-opacity="0.6">脉冲元形状 (逗号分隔)</text>
+
+  <!-- Row 3: Legend -->
+  <text x="80" y="190" font-size="11" fill-opacity="0.4">至多 10 个小节，由 +section+ 分隔</text>
+  <text x="80" y="210" font-size="11" fill-opacity="0.4">脉冲元每根竖条 = 0.1s，最少 2 根 (0.2s)</text>
+</svg>
