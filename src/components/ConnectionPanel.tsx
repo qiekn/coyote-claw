@@ -9,12 +9,14 @@ interface Props {
 const STATUS_TEXT: Record<ConnectionStatus, string> = {
   Disconnected: "未连接",
   WaitingForApp: "等待 APP 扫码",
+  AppConnected: "APP 已连接，绑定中...",
   Paired: "已配对",
 };
 
 const STATUS_COLOR: Record<ConnectionStatus, string> = {
   Disconnected: "text-red-400",
   WaitingForApp: "text-yellow-400",
+  AppConnected: "text-blue-400",
   Paired: "text-green-400",
 };
 
@@ -26,9 +28,11 @@ export function ConnectionPanel({ status, qrcodeUrl }: Props) {
           className={`h-3 w-3 rounded-full ${
             status === "Paired"
               ? "bg-green-400"
-              : status === "WaitingForApp"
-                ? "bg-yellow-400"
-                : "bg-red-400"
+              : status === "AppConnected"
+                ? "bg-blue-400"
+                : status === "WaitingForApp"
+                  ? "bg-yellow-400"
+                  : "bg-red-400"
           }`}
         />
         <span className={`text-lg font-medium ${STATUS_COLOR[status]}`}>

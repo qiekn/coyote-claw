@@ -40,12 +40,15 @@ pub fn run() {
 
             // 启动事件转发到前端
             let handle = app.handle().clone();
-            let event_rx = app.state::<AppState>().event_rx.clone();
+            let event_rx = {
+                let state: tauri::State<AppState> = app.state();
+                state.event_rx.clone()
+            };
             tauri::async_runtime::spawn(async move {
                 let mut rx = event_rx.lock().await;
                 while let Some(event) = rx.recv().await {
                     match event {
-                        ServerEvent::StatusChanged(_id, status) => {
+                        ServerEvent::StatusChanged(status) => {
                             let _ = handle.emit("ws:connection-status", &status);
                         }
                         ServerEvent::StrengthUpdate(fb) => {
@@ -81,17 +84,26 @@ pub fn run() {
 
 #[tauri::command]
 fn get_qrcode_url(state: tauri::State<AppState>) -> String {
-    // 获取本机局域网 IP
     let host = local_ip().unwrap_or_else(|| "127.0.0.1".to_string());
     state.server.qrcode_url(&host)
 }
 
-/// 获取本机局域网 IP
 fn local_ip() -> Option<String> {
     let socket = std::net::UdpSocket::bind("0.0.0.0:0").ok()?;
     socket.connect("8.8.8.8:80").ok()?;
     let addr = socket.local_addr().ok()?;
     Some(addr.ip().to_string())
+}
+
+/// 构建发送给 APP 的 msg 消息 (对标 C++ 的 SendToApp)
+fn build_app_msg(client_id: &str, app_id: &str, message: &str) -> String {
+    serde_json::to_string(&serde_json::json!({
+        "type": "msg",
+        "clientId": client_id,
+        "targetId": app_id,
+        "message": message,
+    }))
+    .unwrap()
 }
 
 #[tauri::command]
@@ -102,25 +114,16 @@ async fn send_strength(
     value: u32,
 ) -> Result<(), String> {
     let server = &state.server;
-    let target_id = server
-        .connections
-        .get_partner(&server.client_id)
+    let app_id = server
+        .app_id
+        .lock()
         .await
-        .ok_or("未配对")?;
+        .clone()
+        .ok_or("APP 未连接")?;
 
-    let msg = serde_json::to_string(&serde_json::json!({
-        "type": "msg",
-        "clientId": server.client_id,
-        "targetId": target_id,
-        "message": format!("strength-{}+{}+{}", channel, mode, value.min(200)),
-    }))
-    .unwrap();
-
-    server
-        .connections
-        .send_to(&target_id, &msg)
-        .await
-        .map_err(|e| e.to_string())
+    let message = format!("strength-{}+{}+{}", channel, mode, value.min(200));
+    let msg = build_app_msg(&server.client_id, &app_id, &message);
+    server.send_to_app(&msg).await
 }
 
 #[tauri::command]
@@ -130,25 +133,16 @@ async fn send_waveform(
     waveform: String,
 ) -> Result<(), String> {
     let server = &state.server;
-    let target_id = server
-        .connections
-        .get_partner(&server.client_id)
+    let app_id = server
+        .app_id
+        .lock()
         .await
-        .ok_or("未配对")?;
+        .clone()
+        .ok_or("APP 未连接")?;
 
-    let msg = serde_json::to_string(&serde_json::json!({
-        "type": "msg",
-        "clientId": server.client_id,
-        "targetId": target_id,
-        "message": format!("pulse-{}:{}", channel, waveform),
-    }))
-    .unwrap();
-
-    server
-        .connections
-        .send_to(&target_id, &msg)
-        .await
-        .map_err(|e| e.to_string())
+    let message = format!("pulse-{}:{}", channel, waveform);
+    let msg = build_app_msg(&server.client_id, &app_id, &message);
+    server.send_to_app(&msg).await
 }
 
 #[tauri::command]
@@ -157,32 +151,21 @@ async fn clear_waveform(
     channel: u32,
 ) -> Result<(), String> {
     let server = &state.server;
-    let target_id = server
-        .connections
-        .get_partner(&server.client_id)
+    let app_id = server
+        .app_id
+        .lock()
         .await
-        .ok_or("未配对")?;
+        .clone()
+        .ok_or("APP 未连接")?;
 
-    let msg = serde_json::to_string(&serde_json::json!({
-        "type": "msg",
-        "clientId": server.client_id,
-        "targetId": target_id,
-        "message": format!("clear-{}", channel),
-    }))
-    .unwrap();
-
-    server
-        .connections
-        .send_to(&target_id, &msg)
-        .await
-        .map_err(|e| e.to_string())
+    let message = format!("clear-{}", channel);
+    let msg = build_app_msg(&server.client_id, &app_id, &message);
+    server.send_to_app(&msg).await
 }
 
 #[tauri::command]
-async fn get_connection_status(state: tauri::State<'_, AppState>) -> Result<ConnectionStatus, ()> {
-    Ok(state
-        .server
-        .connections
-        .get_status(&state.server.client_id)
-        .await)
+async fn get_connection_status(
+    state: tauri::State<'_, AppState>,
+) -> Result<ConnectionStatus, ()> {
+    Ok(state.server.get_status().await)
 }

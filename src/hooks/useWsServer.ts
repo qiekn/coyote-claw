@@ -2,7 +2,11 @@ import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { useEffect, useState, useCallback } from "react";
 
-export type ConnectionStatus = "Disconnected" | "WaitingForApp" | "Paired";
+export type ConnectionStatus =
+  | "Disconnected"
+  | "WaitingForApp"
+  | "AppConnected"
+  | "Paired";
 
 export interface StrengthData {
   a: number;

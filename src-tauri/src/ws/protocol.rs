@@ -137,6 +137,7 @@ impl ErrorCode {
 pub enum ConnectionStatus {
     Disconnected,
     WaitingForApp,
+    AppConnected,
     Paired,
 }
 
