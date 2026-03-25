@@ -1,3 +1,8 @@
+---
+name: dg-lab-websocket-protocol
+description: DG-LAB WebSocket Socket v2 protocol reference - message format, connection flow, strength/waveform commands, error codes
+---
+
 # DG-LAB WebSocket Protocol (Socket v2)
 
 ## Overview

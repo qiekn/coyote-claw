@@ -1,3 +1,8 @@
+---
+name: dg-lab-waveform-data
+description: DG-LAB waveform data format - HEX encoding, frequency/intensity structure, built-in waveform examples
+---
+
 # DG-LAB Waveform Data
 
 ## Waveform Unit Structure

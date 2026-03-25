@@ -1,3 +1,8 @@
+---
+name: dg-lab-bluetooth-v3
+description: DG-LAB Coyote V3 Bluetooth Low Energy protocol - B0 command, BF settings, B1 response, waveform encoding
+---
+
 # DG-LAB Coyote V3 Bluetooth Protocol
 
 ## Overview
