@@ -94,7 +94,7 @@ coyote-claw/
 │       └── ws/            # WebSocket server module
 │           ├── mod.rs
 │           ├── server.rs      # TCP listener, connection lifecycle
-│           ├── connection.rs  # Connection registry & pairing
+│           ├── connection.rs  # Connection types (legacy, to be removed)
 │           ├── message.rs     # Message routing & protocol handling
 │           └── protocol.rs    # DG-LAB types & constants
 ├── notes/                 # Zensical documentation site

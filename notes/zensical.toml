@@ -1,27 +1,23 @@
 [project]
 
 site_name = "Coyote Claw"
-site_description = "DG-LAB coyote 3.0 controller"
+site_description = "DG-LAB Coyote 3.0 第三方控制器"
 site_author = "qiekn"
-site_url = ""
-repo_url = ""
+site_url = "https://qiekn.github.io/coyote-claw/"
+repo_url = "https://github.com/qiekn/coyote-claw"
 
-# Navigation: auto-derived from docs/ directory structure if not defined.
-# Read more: https://zensical.org/docs/setup/navigation/
-# nav = [
-#   { "Home" = "index.md" },
-# ]
-
-# Additional CSS/JS
-# extra_css = ["stylesheets/extra.css"]
-# extra_javascript = ["javascripts/extra.js"]
+nav = [
+  { "首页" = "index.md" },
+  { "架构" = "project.md" },
+  { "波形数据" = "json.md" },
+  { "波形文件" = "pulse.md" },
+]
 
 [project.theme]
 
 logo = "images/zensical.svg"
-# custom_dir = "overrides"
 favicon = "images/zensical.png"
-language = "en"
+language = "zh"
 
 features = [
     "announce.dismiss",
@@ -55,13 +51,9 @@ scheme = "slate"
 toggle.icon = "lucide/moon"
 toggle.name = "Switch to light mode"
 
-# [project.theme.font]
-# text = "Inter"
-# code = "Jetbrains Mono"
-
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
-link = ""
+link = "https://github.com/qiekn/coyote-claw"
 
 [project.markdown_extensions.pymdownx.highlight]
 pygments_lang_class = true
