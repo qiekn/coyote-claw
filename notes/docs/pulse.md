@@ -2,6 +2,8 @@
 
 > 来源: [DG-BBS 论坛 - 3.4.4 新版波形数据格式解析](https://forum.dg-bbs.com/d/18-344-xin-ban-bo-xing-shu-ju-ge-shi-jie-xi)
 
+[官方的波形数据](https://github.com/DG-LAB-OPENSOURCE/DG-LAB-OPENSOURCE/blob/main/socket/DG_WAVES_V2_V3_simple.js)
+
 DG-LAB 官方在 3.4.4 版本开放了波形文件导出功能。`.pulse` 是官方定义的波形文件格式，社区可通过 [DG-BBS 波形分享](https://dg-bbs.com/share) 分享和预览波形。
 
 ![pulse 文件格式](images/pulse-format.svg)
