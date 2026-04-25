@@ -1,34 +1,178 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --card: #171717;
-  --card-foreground: #fafafa;
-  --border: rgba(255, 255, 255, 0.1);
-  --primary: #e5e5e5;
-  --primary-foreground: #171717;
-  --secondary: #262626;
-  --secondary-foreground: #fafafa;
-  --muted: #262626;
-  --muted-foreground: #a3a3a3;
-  --accent: #262626;
-  --accent-foreground: #fafafa;
-  --destructive: rgba(255, 102, 105, 0.6);
-  --input: rgba(255, 255, 255, 0.1);
-  --ring: #737373;
+  --background: #131313;
+  --foreground: #ffffff;
+  color-scheme: dark;
 }
 
 @layer base {
   html,
-  body {
+  body,
+  #root {
     height: 100%;
     margin: 0;
-    background: var(--background);
     color: var(--foreground);
   }
 
-  .font-primary {
-    font-family: "Inter", system-ui, sans-serif;
+  body {
+    background:
+      linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+      linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0,
+      linear-gradient(27deg, #222 5px, transparent 5px) 0 10px,
+      linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+      linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+      linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424 100%);
+    background-size: 20px 20px;
+    background-color: var(--background);
+    font-family: "Chakra Petch", system-ui, sans-serif;
+    touch-action: manipulation;
   }
+}
+
+@layer utilities {
+  .font-digital {
+    font-family: "Orbitron", sans-serif;
+  }
+
+  .glow-cyan {
+    text-shadow: 0 0 10px rgba(6, 182, 212, 0.8), 0 0 20px rgba(6, 182, 212, 0.4);
+  }
+  .glow-orange {
+    text-shadow: 0 0 10px rgba(249, 115, 22, 0.8), 0 0 20px rgba(249, 115, 22, 0.4);
+  }
+  .box-glow-cyan {
+    box-shadow:
+      0 0 15px rgba(6, 182, 212, 0.3),
+      inset 0 0 20px rgba(6, 182, 212, 0.1);
+  }
+  .box-glow-orange {
+    box-shadow:
+      0 0 15px rgba(249, 115, 22, 0.3),
+      inset 0 0 20px rgba(249, 115, 22, 0.1);
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-select {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .btn-press:active {
+    transform: scale(0.95);
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.6);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.8);
+}
+
+/* SortableJS drag styles */
+.sortable-ghost {
+  opacity: 0 !important;
+}
+.sortable-fallback {
+  opacity: 1 !important;
+  background-color: rgba(31, 41, 55, 0.98) !important;
+  box-shadow:
+    0 20px 30px rgba(0, 0, 0, 0.8),
+    0 0 0 1px #4f46e5 !important;
+  z-index: 99999 !important;
+  pointer-events: none !important;
+  transition: none !important;
+  cursor: grabbing !important;
+}
+
+/* SVG circular gauge animation */
+.gauge-circle {
+  transition: stroke-dashoffset 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: rotate(-210deg);
+  transform-origin: 50% 50%;
+}
+
+/* Custom range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+  touch-action: none;
+}
+input[type="range"]:focus {
+  outline: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: #333;
+  border-radius: 4px;
+  border: 1px solid #444;
+}
+input[type="range"].cyan-slider::-webkit-slider-thumb {
+  height: 24px;
+  width: 16px;
+  border-radius: 4px;
+  background: #06b6d4;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -9px;
+  box-shadow: 0 0 10px #06b6d4;
+}
+input[type="range"].orange-slider::-webkit-slider-thumb {
+  height: 24px;
+  width: 16px;
+  border-radius: 4px;
+  background: #f97316;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -9px;
+  box-shadow: 0 0 10px #f97316;
+}
+input[type="range"].indigo-slider::-webkit-slider-thumb {
+  height: 20px;
+  width: 14px;
+  border-radius: 3px;
+  background: #6366f1;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+  box-shadow: 0 0 8px #6366f1;
+}
+
+/* Hide number-input arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* FIRE button "firing" state */
+.fire-btn[data-firing="true"] {
+  background-color: #ffffff !important;
+  color: #dc2626 !important;
+  box-shadow:
+    0 0 20px rgba(255, 255, 255, 0.8),
+    0 0 0 #7f1d1d !important;
+  transform: translateY(0.25rem);
 }
